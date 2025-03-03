@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  varnish:
+    image: varnish:6.0.10
+    volumes:
+      - ./default.vcl:/etc/varnish/default.vcl
+      - ./inside_varnish_container.sh:/etc/varnish/inside_varnish_container.sh
+      - ./access.log:/var/log/varnish/access.log
+    ports:
+      - "8081:80"
+    command: ["/usr/local/bin/varnishd", "-F", "-a", "0.0.0.0:80", "-f", "/etc/varnish/default.vcl", "-t", "300", "-l", "82000K", "-p", "cli_timeout=30", "-p", "cli_limit=131072", "-p", "send_timeout=2147483647", "-p", "nuke_limit=500", "-p", "http_resp_hdr_len=22528", "-p", "thread_pool_min=40", "-p", "thread_pool_max=4000", "-p", "thread_pool_timeout=300", "-p", "timeout_idle=5", "-p", "feature=+esi_disable_xml_check,+esi_ignore_other_elements", "-p", "syslog_cli_traffic=off", "-p", "http_max_hdr=128", "-s", "malloc,3.22G"]
+  nginx:
+    image: nginx:latest
+    hostname: nginx_test
+    volumes:
+      - ./static-web:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
