@@ -24,11 +24,11 @@ docker compose up -d
 azureuser@varnish:~$ sudo docker exec -it varnish-varnish-1 bash
 root@236790560b01:/etc/varnish# ./inside_varnish_container.sh
 ```
-3. In another terminal, open 4 instances of the `./attach.sh` script. 
+3. In another terminal, open 4 instances of the `./attack.sh` script. 
 4. After the attacks are finished, you will have the `./access.log` file with the requests information. Run the `analyze.sh` script
 ```bash
 azureuser@varnish:~/varnish$ ./analyze.sh access.log
-File:                                   access.log.bak
+File:                                   access.log
 Total Matched:                          160000
 Unique Requests:                        160000
 Unique Percentage:                      100.00%
@@ -36,10 +36,11 @@ Hit Count:                              0
 Hit Percentage:                         0.00%
 Repeated Requests:                      0.00%
 Miss Percentage:                        100.00%
-P50:                                    0.016780s (# Requests slower: 80000)
-P90:                                    2.020970s (# Requests slower: 16000)
-P95:                                    5.013318s (# Requests slower: 8000)
-P99:                                    5.213179s (# Requests slower: 1600)
+P50:                                    3.648756s (# Requests slower: 80000)
+P90:                                    14.573747s (# Requests slower: 16000)
+P95:                                    19.415144s (# Requests slower: 8000)
+P99:                                    30.757543s (# Requests slower: 1600)
+Slowest request:                        87.895929s
 --------------------
 ```
 
@@ -62,3 +63,9 @@ P95:                                    5.013318s (# Requests slower: 8000)
 P99:                                    5.213179s (# Requests slower: 1600)
 --------------------
 ```
+
+
+## Notes
+- When we store a lot of requests with the issue, the attack might take a lot of time. so you can just test with one instance.
+- CPU & Memory utalization was not full during any of the tests.
+- I am using an azure instance with 4GB of memory for testing. 
