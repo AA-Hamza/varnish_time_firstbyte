@@ -1,0 +1,3 @@
+[submodule "static-web"]
+	path = static-web
+	url = https://github.com/gbaeke/static-web
