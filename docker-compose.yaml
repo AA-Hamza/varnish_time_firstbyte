@@ -14,7 +14,7 @@ services:
     image: nginx:latest
     hostname: nginx_test
     volumes:
-      - ./static-web:/usr/share/nginx/html:ro
+      - ./static:/usr/share/nginx/html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "8080:80"
